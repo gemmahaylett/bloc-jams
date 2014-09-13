@@ -42,24 +42,33 @@
    return $(template);
  };
 
- var changeAlbumView = function(album) {
-    // Update the album title
-   var $albumTitle = $('.album-title');
+ var displayAlbumSummary = function(albumId, album){
+   // Update the album title
+   var albumTitleStr= albumId + ' .album-title';
+   var $albumTitle = $(albumTitleStr);
    $albumTitle.text(album.name);
  
    // Update the album artist
-   var $albumArtist = $('.album-artist');
+   var albumArtistStr= albumId + ' .album-artist';
+   var $albumArtist = $(albumArtistStr);
    $albumArtist.text(album.artist);
  
    // Update the meta information
-   var $albumMeta = $('.album-meta-info');
+   var albumMetaStr= albumId + ' .album-meta-info';
+   var $albumMeta = $(albumMetaStr);
    $albumMeta.text(album.year + " on " + album.label);
 
     // Update the album image
-   var $albumImage = $('.album-image img');
+   var albumImgStr = albumId + '.album-image img';
+   var $albumImage = $(albumImgStr);
    $albumImage.attr('src', album.albumArtUrl);
- 
+
+ }
+
+ var changeAlbumView = function(event) {
    // Update the Song List
+   console.log(event);
+   album = event.data;
    var $songList = $(".album-song-listing");
    $songList.empty();
    var songs = album.songs;
@@ -70,12 +79,18 @@
    }
  };
 
+
 // This 'if' condition is used to prevent the jQuery modifications
 // from happening on non-Album view pages.
 //  - Use a regex to validate that the url has "/album" in its path.
 if (document.URL.match(/\/album.html/)) {
  // Wait until the HTML is fully processed.
  $(document).ready(function() {
-   changeAlbumView(albumMarconi);
-     });
+   displayAlbumSummary('#album-1', albumMarconi);
+   displayAlbumSummary('#album-2', albumPicasso);
+   //changeAlbumView(albumMarconi);
+
+   $('#album-1').click(albumMarconi, changeAlbumView);
+   $('#album-2').click(albumPicasso, changeAlbumView);
+   });
  }
