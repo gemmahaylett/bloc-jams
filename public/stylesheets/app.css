@@ -42,6 +42,10 @@
   .table.album-song-listing td {
     padding: 20px;
     border-top: 1px solid rgba(255, 255, 255, 0.4); }
+  .table.album-song-listing .songEven {
+    background-color: rgba(123, 70, 163, 0.9); }
+  .table.album-song-listing .songOdd {
+    background-color: none; }
 
 .album-song-button {
   text-align: center;

@@ -44,6 +44,14 @@
       padding: 20px;
       border-top: 1px solid rgba(255, 255, 255, .4);
    }
+
+   .songEven{
+      background-color: rgba(123, 70, 163, 0.9);
+   }
+
+   .songOdd{
+      background-color: none;
+   }
  }
 
  .album-song-button {
@@ -81,5 +89,7 @@
    height: 70px;
    text-align: center;
  }
+
+
 
  
