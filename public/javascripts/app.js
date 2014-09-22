@@ -426,11 +426,31 @@ blocJams.service('SongPlayer', function() {
    var trackIndex = function(album, song) {
      return album.songs.indexOf(song);
    };
+
+   var setFowardButton = function(currentTrackIndex, albumLength){
+      if(currentTrackIndex === albumLength-1){
+        return false;
+      }
+      else{
+        return true;
+      }
+   }
+
+   var setBackwardButton = function(currentTrackIndex){
+      if (currentTrackIndex === 0) {
+         return false;
+      }
+      else{
+         return true;
+      }
+   }
  
    return {
      currentSong: null,
      currentAlbum: null,
      playing: false,
+     isNextForward: true,
+     isNextBackward: true,
  
      play: function() {
        this.playing = true;
@@ -440,20 +460,33 @@ blocJams.service('SongPlayer', function() {
      },
      next: function() {
        var currentTrackIndex = trackIndex(this.currentAlbum, this.currentSong);
-       currentTrackIndex++;
-       if (currentTrackIndex >= this.currentAlbum.songs.length) {
-         currentTrackIndex = 0;
+       if ((currentTrackIndex >= this.currentAlbum.songs.length) || (currentTrackIndex < 0)) {
+ //        currentTrackIndex = 0;
+          this.currentSong = null;
+          this.playing = false;
        }
-       this.currentSong = this.currentAlbum.songs[currentTrackIndex];
+       else{
+          currentTrackIndex++;
+          this.currentSong = this.currentAlbum.songs[currentTrackIndex];
+       }   
+       
+       this.isNextForward = setFowardButton(currentTrackIndex, this.currentAlbum.songs.length);
+       this.isNextBackward = setBackwardButton(currentTrackIndex);
      },
      previous: function() {
        var currentTrackIndex = trackIndex(this.currentAlbum, this.currentSong);
        currentTrackIndex--;
        if (currentTrackIndex < 0) {
-         currentTrackIndex = this.currentAlbum.songs.length - 1;
+         //currentTrackIndex = this.currentAlbum.songs.length - 1;
+         //currentTrackIndex = 0;
+         this.currentSong = null;
        }
- 
-       this.currentSong = this.currentAlbum.songs[currentTrackIndex];
+       else{
+         this.currentSong = this.currentAlbum.songs[currentTrackIndex];
+       }
+
+       this.isNextForward = setFowardButton(currentTrackIndex);
+       this.isNextBackward = setBackwardButton(currentTrackIndex);
      },
      setSong: function(album, song) {
        this.currentAlbum = album;
