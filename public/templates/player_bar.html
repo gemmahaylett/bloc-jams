@@ -2,8 +2,8 @@
 <div ng-controller="PlayerBar.controller" class='player-bar'>
    <div class='container'>
      <div class='play-controls player-bar-control-group left-controls'>
-       <a class='previous' ng-click="songPlayer.previous()">
-         <i class='fa fa-backward' ng-show="songPlayer.isNextBackward"></i>
+       <a class='previous' ng-show="songPlayer.isNextBackward" ng-click="songPlayer.previous()">
+         <i class='fa fa-backward'></i>
        </a>
        <a class='play-pause'>
          <i class='fa fa-play' ng-show="!songPlayer.playing" ng-click="songPlayer.play()"></i>
