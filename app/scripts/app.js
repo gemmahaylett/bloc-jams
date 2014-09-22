@@ -275,3 +275,11 @@ blocJams.directive('slider', function(){
     }
    };
  });
+
+blocJams.directive('clickme', function(){
+   return {
+     templateUrl: '/templates/directives/click-me.html', // We'll create these files shortly.
+     replace: true,
+     restrict: 'E'
+   };
+ });
