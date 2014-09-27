@@ -520,7 +520,7 @@ blocJams.service('SongPlayer', function() {
    };
 });
 
-blocJams.directive('slider', function(){
+blocJams.directive('slider', ['$document', function($document){
 
    // Returns a number between 0 and 1 to determine where the mouse event happened along the slider bar.
    var calculateSliderPercentFromMouseEvent = function($slider, event) {
@@ -540,9 +540,15 @@ blocJams.directive('slider', function(){
      link: function(scope, element, attributes) {
        // These values represent the progress into the song/volume bar, and its max value.
        // For now, we're supplying arbitrary initial and max values.
+
        scope.value = 0;
        scope.max = 200;
        var $seekBar = $(element);
+
+       scope.onClickSlider = function(event) {
+         var percent = calculateSliderPercentFromMouseEvent($seekBar, event);
+         scope.value = percent * scope.max;
+       }
  
        var percentString = function () {
          percent = Number(scope.value) / Number(scope.max)  * 100;
@@ -556,9 +562,24 @@ blocJams.directive('slider', function(){
        scope.thumbStyle = function() {
          return {left: percentString()};
        }
+
+       scope.trackThumb = function() {
+         $document.bind('mousemove.thumb', function(event){
+           var percent = calculateSliderPercentFromMouseEvent($seekBar, event);
+           scope.$apply(function(){
+             scope.value = percent * scope.max;
+           });
+         });
+ 
+         //cleanup
+         $document.bind('mouseup.thumb', function(){
+           $document.unbind('mousemove.thumb');
+           $document.unbind('mouseup.thumb');
+         });
+       };
    }
  }
- });
+ }]);
 });
 
 ;require.register("scripts/collection", function(exports, require, module) {
